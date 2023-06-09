@@ -1,0 +1,9 @@
+#定义命名空间
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: smant
+  labels:
+    name: smant
+---

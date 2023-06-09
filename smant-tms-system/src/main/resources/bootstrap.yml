@@ -1,0 +1,38 @@
+# Tomcat
+server:
+  port: 8081
+
+# Spring
+spring:
+  application:
+    # 应用名称
+    name: smant-tms-system
+  profiles:
+    # 环境配置
+    active: @profiles.active@
+  cloud:
+    nacos:
+      discovery:
+        # 注册组
+        server-addr: @nacos.server@
+        group: @nacos.discovery.group@
+        namespace: @nacos.discovery.namespace@
+        cluster-name: @nacos.discovery.cluster@
+      config:
+        # 配置组
+        server-addr: @nacos.server@
+        group: @nacos.config.group@
+        namespace: @nacos.config.namespace@
+        prefix: ${spring.application.name}
+        file-extension: yml
+        extension-configs:
+          - data-id: common-rabbitmq.yml
+            group: @nacos.discovery.group@
+            refresh: true
+          - data-id: common-redis.yml
+            group: @nacos.discovery.group@
+            refresh: true
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
+

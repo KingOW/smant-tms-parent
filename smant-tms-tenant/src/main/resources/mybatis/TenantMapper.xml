@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smant.tms.tenant.dao.mapper.TenantMapper">
+
+<!--    <resultMap id="TenantResultMap" type="com.smant.tms.tenant.dao.entity.TenantPO">-->
+<!--<property ></property>-->
+<!--    </resultMap>-->
+
+    <sql id="TenantPubColSQL">
+        create_user,
+        create_time,
+        update_user,
+        update_time
+    </sql>
+    <sql id="TenantColSQL">
+        tenant_id,
+        tenant_code,
+        tenant_name,
+        tenant_full_name,
+        tenant_status,
+        tenant_status_name,
+        tenant_status_reason,
+        tenant_desc,
+        remark,
+        version
+    </sql>
+    <insert id="insertTenant">
+     INSERT INTO tms_tenant(<include refid="TenantColSQL"/>,<include refid="TenantPubColSQL"/>)
+     VALUES (
+        #{tenantPO.tenantId},
+        #{tenantPO.tenantCode},
+        #{tenantPO.tenantName},
+        #{tenantPO.tenantFullName},
+        #{tenantPO.tenantStatus},
+        #{tenantPO.tenantStatusName},
+        #{tenantPO.tenantStatusReason},
+        #{tenantPO.tenantDesc},
+        #{tenantPO.remark},
+        1,
+        #{tenantPO.createUser},
+        #{tenantPO.createTime},
+        #{tenantPO.updateUser},
+        #{tenantPO.updateTime}
+        );
+     INSERT INTO tms_tenant_snapshoot(<include refid="TenantColSQL"/>,create_user,create_time)
+     SELECT <include refid="TenantColSQL"/>,create_user,create_time FROM tms_tenant WHERE tenant_id = #{tenantPO.tenantId}
+
+    </insert>
+</mapper>

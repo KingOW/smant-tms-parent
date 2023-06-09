@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smant.tms.system.dao.mapper.SysUserMapper">
+
+    <!-- result map -->
+    <resultMap id="SysUserResultMap" type="com.smant.tms.system.dao.entity.SysUserPO">
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="loginName" column="login_name"/>
+        <result property="loginPwd" column="login_pwd"/>
+        <result property="userStatus" column="user_status"/>
+        <result property="userStatusName" column="user_status_name"/>
+        <result property="userStatusReason" column="user_status_reason"/>
+        <result property="userDesc" column="user_desc"/>
+        <result property="remark" column="remark"/>
+        <result property="createUser" column="create_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="SysUserPubColSQL">
+        create_user
+        ,
+        create_time,
+        update_user,
+        update_time
+    </sql>
+    <sql id="SysUserColSQL">
+        user_id
+        ,
+        user_name,
+        login_name,
+        login_pwd,
+        user_status,
+        user_status_name,
+        user_status_reason,
+        user_desc,
+        remark
+    </sql>
+    <insert id="insertSysUserPO">
+        INSERT INTO tms_sysuser(<include refid="SysUserColSQL"/>,<include refid="SysUserPubColSQL"/>)
+        VALUES(
+        #{sysUserPO.userId},
+        #{sysUserPO.userName},
+        #{sysUserPO.loginName},
+        #{sysUserPO.loginPwd},
+        #{sysUserPO.userStatus},
+        #{sysUserPO.userStatusName},
+        #{sysUserPO.userStatusReason},
+        #{sysUserPO.userDesc},
+        #{sysUserPO.remark},
+        #{sysUserPO.createUser},
+        #{sysUserPO.createTime},
+        #{sysUserPO.updateUser},
+        #{sysUserPO.updateTime}
+        );
+
+    </insert>
+    <select id="selectSysUserPOByLoginNameAndPwd" resultMap="SysUserResultMap">
+        SELECT *
+        FROM tms_sysuser
+        WHERE login_name = #{loginName}
+          AND login_pwd = #{loginPwd}
+          AND user_status != 99;
+    </select>
+    <select id="selectSysUserPOByLoginName" resultMap="SysUserResultMap">
+        SELECT *
+        FROM tms_sysuser
+        WHERE login_name = #{loginName}
+          AND user_status != 99;
+    </select>
+    <!--    <insert id="insertSysUser">-->
+    <!--     INSERT INTO tms_sysuser(<include refid="SysUserColSQL"/>,<include refid="SysUserPubColSQL"/>)-->
+    <!--     VALUES (-->
+    <!--        #{tenantPO.tenantId},-->
+    <!--        #{tenantPO.tenantCode},-->
+    <!--        #{tenantPO.tenantName},-->
+    <!--        #{tenantPO.tenantFullName},-->
+    <!--        #{tenantPO.tenantStatus},-->
+    <!--        #{tenantPO.tenantDesc},-->
+    <!--        #{tenantPO.remark},-->
+    <!--        1,-->
+    <!--        #{tenantPO.createUser},-->
+    <!--        #{tenantPO.createTime},-->
+    <!--        #{tenantPO.updateUser},-->
+    <!--        #{tenantPO.updateTime}-->
+    <!--        );-->
+    <!--     INSERT INTO tms_tenant_snapshoot(<include refid="TenantColSQL"/>,create_user,create_time)-->
+    <!--     SELECT <include refid="TenantColSQL"/>,create_user,create_time FROM tms_tenant WHERE tenant_id = #{tenantPO.tenantId}-->
+
+    <!--    </insert>-->
+</mapper>

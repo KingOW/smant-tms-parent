@@ -1,0 +1,57 @@
+### deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smant-tms-tenant-deployment
+  namespace: smant
+  labels:
+    ylsk.smant.app/name: smant-tms-tenant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      ylsk.smant.app/name: smant-tms-tenant
+  template:
+    metadata:
+      namespace: smant
+      labels:
+        ylsk.smant.app/name: smant-tms-tenant
+    spec:
+      containers:
+        - name: smant-tms-tenant
+          image: %{image_name}%
+          resources:
+            limits:
+              memory: "1500Mi"
+              cpu: "1.5"
+            requests:
+              cpu: "0.8"
+              memory: "1000Mi"
+          command: ["java","-Dloader.path=/app/lib","-Dspring.cloud.bootstrap.location=/app/config/bootstrap.yml","-jar","/app/smant-tms-tenant.jar"]
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: IfNotPresent
+      imagePullSecrets:
+        - name: harbor-userpass
+---
+### smant crm gateway service
+apiVersion: v1
+kind: Service
+metadata:
+  name: smant-tms-tenant
+  namespace: smant
+  labels:
+    ylsk.smant.app/name: smant-tms-tenant
+spec:
+  type: ClusterIP
+  selector:
+    ylsk.smant.app/name: smant-tms-tenant
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
+#      nodePort: 32144
+---
+
+

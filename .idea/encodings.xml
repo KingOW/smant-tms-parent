@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/smant-tms-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smant-tms-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smant-tms-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smant-tms-gateway/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smant-tms-model/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smant-tms-model/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smant-tms-openapi/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smant-tms-openapi/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smant-tms-system/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smant-tms-system/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smant-tms-tenant/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smant-tms-tenant/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smant-tms-user/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smant-tms-user/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>
