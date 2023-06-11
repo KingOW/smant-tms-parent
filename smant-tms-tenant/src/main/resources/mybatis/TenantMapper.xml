@@ -4,9 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.smant.tms.tenant.dao.mapper.TenantMapper">
 
-<!--    <resultMap id="TenantResultMap" type="com.smant.tms.tenant.dao.entity.TenantPO">-->
-<!--<property ></property>-->
-<!--    </resultMap>-->
+    <resultMap id="TenantResultMap" type="com.smant.tms.tenant.dao.entity.TenantPO">
+<result property="tenantId" column="tenant_id"/>
+        <result property="tenantCode" column="tenant_code"/>
+        <result property="tenantName" column="tenant_name"/>
+        <result property="tenantStatus" column="tenant_status"/>
+        <result property="tenantStatusName" column="tenant_status_name"/>
+        <result property="version" column="version"/>
+        <result property="remark" column="remark"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
 
     <sql id="TenantPubColSQL">
         create_user,
@@ -21,10 +31,17 @@
         tenant_full_name,
         tenant_status,
         tenant_status_name,
-        tenant_status_reason,
         tenant_desc,
         remark,
         version
+    </sql>
+    <sql id="insertTenantSnapshootByIdSQL">
+        INSERT INTO tms_tenant_snapshoot(<include refid="TenantColSQL"/>,<include refid="TenantPubColSQL"/>)
+        SELECT <include refid="TenantColSQL"/>,<include refid="TenantPubColSQL"/> FROM tms_tenant WHERE tenant_id =
+    </sql>
+    <sql id="insertTenantSnapshootByCodeSQL">
+        INSERT INTO tms_tenant_snapshoot(<include refid="TenantColSQL"/>,<include refid="TenantPubColSQL"/>)
+        SELECT <include refid="TenantColSQL"/>,<include refid="TenantPubColSQL"/> FROM tms_tenant WHERE tenant_code =
     </sql>
     <insert id="insertTenant">
      INSERT INTO tms_tenant(<include refid="TenantColSQL"/>,<include refid="TenantPubColSQL"/>)
@@ -35,7 +52,6 @@
         #{tenantPO.tenantFullName},
         #{tenantPO.tenantStatus},
         #{tenantPO.tenantStatusName},
-        #{tenantPO.tenantStatusReason},
         #{tenantPO.tenantDesc},
         #{tenantPO.remark},
         1,
@@ -44,8 +60,72 @@
         #{tenantPO.updateUser},
         #{tenantPO.updateTime}
         );
-     INSERT INTO tms_tenant_snapshoot(<include refid="TenantColSQL"/>,create_user,create_time)
-     SELECT <include refid="TenantColSQL"/>,create_user,create_time FROM tms_tenant WHERE tenant_id = #{tenantPO.tenantId}
-
+    <include refid="insertTenantSnapshootByIdSQL"/>  #{tenantPO.tenantId}
     </insert>
+
+<!--查询租户信息-->
+    <select id="selectTenantById" resultMap="TenantResultMap">
+        SELECT<include refid="TenantColSQL"/>,
+        <include refid="TenantPubColSQL"/>
+        FROM tms_tenant
+        WHERE 1 = 1 AND tenant_id = #{tenantId};
+    </select>
+
+    <select id="selectTenantByCode" resultMap="TenantResultMap">
+        SELECT<include refid="TenantColSQL"/>,
+        <include refid="TenantPubColSQL"/>
+        FROM tms_tenant
+        WHERE 1 = 1 AND tenant_code = #{tenantCode};
+    </select>
+
+<!-- 分页查询租户列表（非删除状态）-->
+    <select id="selectTenantsByPage" resultMap="TenantResultMap">
+        SELECT<include refid="TenantColSQL"/>,
+        <include refid="TenantPubColSQL"/>
+        FROM tms_tenant
+        WHERE 1 = 1 AND tenant_status != 99
+        <if test="tenantCode != null and tenantCode != '' ">
+            AND tenant_code like #{tenantCode}
+        </if>
+        <if test="tenantName != null and tenantName != '' ">
+            AND tenant_name like #{tenantName}
+        </if>
+        <if test="tenantStatus != '0' ">
+            AND tenant_status = #{tenantStatus}
+        </if>
+        LIMIT #{page.startIndex},#{page.endIndex}
+    </select>
+
+    <select id="countTenants" resultType="int">
+        SELECT COUNT(1) FROM tms_tenant
+        WHERE 1 = 1 AND tenant_status != 99
+        <if test="tenantCode != null and tenantCode != '' ">
+            AND tenant_code like #{tenantCode}
+        </if>
+        <if test="tenantName != null and tenantName != '' ">
+            AND tenant_name like #{tenantName}
+        </if>
+        <if test="tenantStatus != '0' ">
+            AND tenant_status = #{tenantStatus}
+        </if>
+    </select>
+
+<!--根据ID,根据租户状态-->
+    <update id="updateTenantStatusById">
+     UPDATE tms_tenant set tenant_status = #{tenantStatus},
+                           version = version + 1,
+                           update_user = #{operUser},
+                           update_time = #{operTime}
+    WHERE 1 = 1 AND tenant_id = #{tenantId};
+   <include refid="insertTenantSnapshootByIdSQL"/>#{tenantId}
+    </update>
+    <!--根据编码,根据租户状态-->
+    <update id="updateTenantStatusByCode">
+        UPDATE tms_tenant set tenant_status = #{tenantStatus},
+        version = version + 1,
+        update_user = #{operUser},
+        update_time = #{operTime}
+        WHERE 1 = 1 AND tenant_code = #{tenantCode};
+        <include refid="insertTenantSnapshootByCodeSQL"/> #{tenantCode}
+    </update>
 </mapper>

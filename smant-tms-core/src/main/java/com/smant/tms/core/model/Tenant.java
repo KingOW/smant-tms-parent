@@ -57,4 +57,8 @@ public class Tenant extends  BaseBean{
      * 备注
      */
     private String remark;
+    public void TenantSataus(TenantStatus tenantStatus){
+        this.tenantStatus = tenantStatus.getCode();
+        this.tenantDesc = tenantStatus.getName();
+    }
 }

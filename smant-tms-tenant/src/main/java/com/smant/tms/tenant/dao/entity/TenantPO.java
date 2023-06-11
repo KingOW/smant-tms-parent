@@ -54,7 +54,7 @@ public class TenantPO extends BaseBean {
     //@TableField(value="tenant_status")
     private int tenantStatus = TenantStatus.ENABLE.getCode();
 
-    private String tenatStatusName = TenantStatus.ENABLE.getName();
+    private String tenantStatusName = TenantStatus.ENABLE.getName();
 
     /**
      * 状态描述：生成/流转到该状态的原因描述

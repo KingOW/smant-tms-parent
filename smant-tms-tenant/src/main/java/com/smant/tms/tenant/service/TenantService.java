@@ -5,6 +5,8 @@ import com.smant.common.beans.ResultBean;
 import com.smant.tms.core.exceptions.TmsException;
 import com.smant.tms.core.model.Tenant;
 
+import java.util.List;
+
 public interface TenantService {
 
     /**
@@ -41,7 +43,33 @@ public interface TenantService {
      * @return
      * @throws TmsException
      */
-    ResultBean<PageDataBean<Tenant>> queryTenants(String tenantCode,String tenantName,int tenantStatus,int pageNo,int pageSize)throws TmsException;
+    ResultBean<List<Tenant>> queryTenants(String tenantCode, String tenantName, int tenantStatus, int pageNo, int pageSize)throws TmsException;
 
 
+    /**
+     * 启用租户
+     * @param tenantId
+     * @return
+     * @throws TmsException
+     */
+    ResultBean<String> enableTenantById(String tenantId)throws TmsException;
+    ResultBean<String> enableTenantByCode(String tenantCode)throws TmsException;
+
+    /**
+     * 禁用租户
+     * @param tenantId
+     * @return
+     * @throws TmsException
+     */
+    ResultBean<String> disableTenantById(String tenantId)throws TmsException;
+    ResultBean<String> disableTenantByCode(String tenantCode)throws TmsException;
+
+    /**
+     * 删除租户
+     * @param tenantId
+     * @return
+     * @throws TmsException
+     */
+    ResultBean<String> deleteTenantById(String tenantId)throws TmsException;
+    ResultBean<String> deleteTenantByCode(String tenantCode)throws TmsException;
 }
