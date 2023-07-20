@@ -2,6 +2,8 @@ package com.smant.tms.tenant.dao.mapper;
 
 import com.smant.common.beans.PageDataBean;
 import com.smant.tms.tenant.dao.entity.TenantPO;
+import com.smant.tms.tenant.dao.entity.TenantSProdPO;
+import com.smant.tms.tenant.dao.entity.TenantSProdPermPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -46,8 +48,7 @@ public interface TenantMapper{
      * @param tenantCode
      * @param tenantName
      * @param tenantStatus
-     * @param startIndex
-     * @param pageSize
+     * @param page
      * @return
      * @throws Exception
      */
@@ -85,5 +86,48 @@ public interface TenantMapper{
                                  @Param(value = "tenantStatus")int tenantStatus,
                                  @Param(value = "operUser")String operUser,
                                  @Param(value = "operTime") LocalDateTime operTime);
+
+
+    /**
+     * 查询租户：根据ID或者编码
+     * @param tenantIdCode
+     * @return
+     * @throws Exception
+     */
+     TenantPO selectTenantByIdCode(@Param(value = "tenantIdCode")String tenantIdCode)throws Exception;
+
+
+    /**
+     * 添加租户-产品
+     * @param tenantSProdPO
+     * @return
+     * @throws Exception
+     */
+    int insertTenantSProd(@Param(value = "tsp") TenantSProdPO tenantSProdPO)throws Exception;
+
+    /**
+     * 查询某租户是否使用某产品
+     * @param tenantIdCode
+     * @param sprodIdCode
+     * @return
+     * @throws Exception
+     */
+    TenantSProdPO selectTenantSProd(@Param(value = "tenantIdCode")String tenantIdCode,@Param(value = "sprodIdCode")String sprodIdCode)throws Exception;
+
+    /**
+     * 某租户的产品列表
+     * @param tenantIdCode
+     * @return
+     * @throws Exception
+     */
+    List<TenantSProdPO> selectTenantSProdsByTenant(@Param(value = "tenantIdCode")String tenantIdCode)throws Exception;
+
+    /**
+     * 插入租户-产品权限
+     * @param terms
+     * @return
+     * @throws Exception
+     */
+    int insertTenantSProdPerms(@Param(value = "sperms")List<TenantSProdPermPO> terms)throws Exception;
 
 }

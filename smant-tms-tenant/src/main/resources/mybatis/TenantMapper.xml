@@ -5,7 +5,7 @@
 <mapper namespace="com.smant.tms.tenant.dao.mapper.TenantMapper">
 
     <resultMap id="TenantResultMap" type="com.smant.tms.tenant.dao.entity.TenantPO">
-<result property="tenantId" column="tenant_id"/>
+        <result property="tenantId" column="tenant_id"/>
         <result property="tenantCode" column="tenant_code"/>
         <result property="tenantName" column="tenant_name"/>
         <result property="tenantStatus" column="tenant_status"/>
@@ -63,7 +63,8 @@
     <include refid="insertTenantSnapshootByIdSQL"/>  #{tenantPO.tenantId}
     </insert>
 
-<!--查询租户信息-->
+
+    <!--查询租户信息-->
     <select id="selectTenantById" resultMap="TenantResultMap">
         SELECT<include refid="TenantColSQL"/>,
         <include refid="TenantPubColSQL"/>
@@ -110,6 +111,18 @@
         </if>
     </select>
 
+    <select id="selectTenantByIdCode" resultMap="TenantResultMap">
+        SELECT<include refid="TenantColSQL"/>,
+        <include refid="TenantPubColSQL"/>
+        FROM tms_tenant
+        WHERE 1 = 1
+        AND (
+        tenant_id = #{tenantIdCode};
+        OR
+        tenant_code = #{tenantIdCode}
+        )
+    </select>
+
 <!--根据ID,根据租户状态-->
     <update id="updateTenantStatusById">
      UPDATE tms_tenant set tenant_status = #{tenantStatus},
@@ -128,4 +141,61 @@
         WHERE 1 = 1 AND tenant_code = #{tenantCode};
         <include refid="insertTenantSnapshootByCodeSQL"/> #{tenantCode}
     </update>
+
+<!--插入租户 产品关联关系-->
+    <sql id="TenantSProdColSQL">
+        tenant_id,
+        tenant_code,
+        tenant_name,
+        sproduct_id,
+        sproduct_code,
+        sproduct_name,
+        active_time,
+        expiry_time,
+        status,
+        remark
+    </sql>
+    <insert id="insertTenantSProd">
+        INSERT INTO tms_tenant_sproduct(<include refid="TenantSProdColSQL"/>)
+        VALUES (
+                #{tsp.tenantId},
+                #{tsp.tenantCode},
+                #{tsp.tenantName},
+                #{tsp.sproductId},
+                #{tsp.sproductCode},
+                #{tsp.sproductName},
+                #{tsp.activeTime},
+                #{tsp.expiryTime},
+                #{tsp.status},
+                #{tsp.remark}
+                );
+    </insert>
+
+    <select id="selectTenantSProd">
+        SELECT <include refid="TenantSProdColSQL"/>
+         FROM tms_tenant_sproduct WHERE 1 = 1
+         AND (
+             tenant_id = #{tenantIdCode}
+             OR
+             tenant_code = #{tenantIdCode}
+             )
+         AND (
+            sproduct_id = #{sprodIdCode}
+            OR
+            sproduct_code = #{sprodIdCode}
+            )
+         AND status != 99;
+    </select>
+
+    <select id="selectTenantSProdsByTenant">
+        SELECT <include refid="TenantSProdColSQL"/>
+        FROM tms_tenant_sproduct WHERE 1 = 1
+        AND (
+        tenant_id = #{tenantIdCode}
+        OR
+        tenant_code = #{tenantIdCode}
+        )
+        AND status != 99;
+    </select>
+
 </mapper>

@@ -5,7 +5,7 @@ import com.smant.common.enums.CommResultCode;
 import com.smant.common.utils.StringExtUtils;
 import com.smant.tms.core.exceptions.TmsException;
 import com.smant.tms.core.model.SysUser;
-import com.smant.tms.system.controller.dto.SysUserAddDto;
+import com.smant.tms.system.controller.dto.AddSysUserDto;
 import com.smant.tms.system.controller.dto.SysUserLoginDto;
 import com.smant.tms.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -48,14 +48,14 @@ public class SysUserController {
 
     /**
      * 添加系统用户
-     * @param userAddDto
+     * @param addUserDto
      * @return
      */
     @PostMapping(value = {"/",""})
-    public ResultBean<String> addSysUser(@RequestBody @Validated SysUserAddDto userAddDto){
+    public ResultBean<String> addSysUser(@RequestBody @Validated AddSysUserDto addUserDto){
         try {
             SysUser sysUser = new SysUser();
-            BeanUtils.copyProperties(userAddDto,sysUser);
+            BeanUtils.copyProperties(addUserDto,sysUser);
             return this.sysUserService.saveSysUser(sysUser);
         } catch (TmsException e) {
             log.error("添加用户失败:服务器出现异常.",e);

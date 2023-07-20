@@ -1,7 +1,7 @@
 package com.smant.tms.core.model;
 
 import com.smant.common.beans.BaseBean;
-import com.smant.tms.core.constants.SysUserStatus;
+import com.smant.tms.core.enums.SysUserStatus;
 import lombok.Data;
 
 /**

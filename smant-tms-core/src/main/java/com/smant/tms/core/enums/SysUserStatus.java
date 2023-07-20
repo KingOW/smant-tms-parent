@@ -1,10 +1,11 @@
-package com.smant.tms.core.constants;
+package com.smant.tms.core.enums;
 
-public enum TenantStatus {
+public enum SysUserStatus {
+
 
     ENABLE(1,"启用","启用"),
     DISABLE(2,"禁用","禁用"),
-    LOCKED(3,"锁定","锁定"),
+    LOCKED(3,"锁定","锁定/冻结"),
     DELETE(99,"删除","删除"),
     ;
 
@@ -13,7 +14,7 @@ public enum TenantStatus {
     private final String name;
     private final String desc;
 
-    TenantStatus(int code, String name, String desc) {
+    SysUserStatus(int code, String name, String desc) {
         this.code = code;
         this.name = name;
         this.desc = desc;

@@ -12,17 +12,20 @@
     <artifactId>smant-tms-tenant</artifactId>
 
     <properties>
-        <java.version>17</java.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <com.smant.tms.version>2023.05.23-RELEASE</com.smant.tms.version>
+        <com.smant.pms.version>2023.05.23-RELEASE</com.smant.pms.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.smant.tms</groupId>
             <artifactId>smant-tms-core</artifactId>
             <version>${com.smant.tms.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.smant.pms</groupId>
+            <artifactId>smant-pms-core</artifactId>
+            <version>${com.smant.pms.version}</version>
         </dependency>
         <dependency>
             <groupId>com.smant</groupId>

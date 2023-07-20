@@ -1,6 +1,6 @@
 package com.smant.tms.core.model;
 import com.smant.common.beans.BaseBean;
-import com.smant.tms.core.constants.TenantStatus;
+import com.smant.tms.core.enums.TenantStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;

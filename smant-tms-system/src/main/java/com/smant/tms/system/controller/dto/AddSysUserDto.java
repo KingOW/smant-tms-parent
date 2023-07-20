@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 添加系统用户
  */
 @Data
-public class SysUserAddDto implements Serializable {
+public class AddSysUserDto implements Serializable {
 
     /**
      * 用户名称

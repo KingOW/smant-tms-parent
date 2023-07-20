@@ -5,16 +5,14 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/smant-tms-system/pom.xml" />
+        <option value="$PROJECT_DIR$/smant-tms-core/pom.xml" />
+        <option value="$PROJECT_DIR$/smant-tms-openapi/pom.xml" />
+        <option value="$PROJECT_DIR$/smant-tms-tenant/pom.xml" />
       </list>
     </option>
-    <option name="ignoredFiles">
-      <set>
-        <option value="$PROJECT_DIR$/smant-tms-gateway/pom.xml" />
-        <option value="$PROJECT_DIR$/smant-tms-user/pom.xml" />
-      </set>
-    </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="17" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_20_PREVIEW" project-jdk-name="jdk-20" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

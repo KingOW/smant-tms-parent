@@ -1,5 +1,7 @@
 package com.smant.tms.system.service.impl;
 
+import com.smant.auth.client.SimpleAuthClient;
+import com.smant.auth.core.dto.LoginUserDto;
 import com.smant.common.beans.ResultBean;
 import com.smant.common.enums.CommResultCode;
 import com.smant.common.utils.DateUtils;
@@ -7,7 +9,7 @@ import com.smant.common.utils.NumberExtUtils;
 import com.smant.common.utils.StringExtUtils;
 import com.smant.sdk.redis.model.CacheOption;
 import com.smant.sdk.redis.service.RedisService;
-import com.smant.tms.core.constants.SysUserStatus;
+import com.smant.tms.core.enums.SysUserStatus;
 import com.smant.tms.core.exceptions.TmsException;
 import com.smant.tms.core.model.SysUser;
 import com.smant.tms.system.dao.entity.SysUserPO;
@@ -46,6 +48,10 @@ public class SysUserServiceImpl implements SysUserService {
     @Qualifier(value = "sysUserMapper")
     private SysUserMapper sysUserMapper;
 
+    @Autowired
+//    @Qualifier(value = "simpleAuthClient")
+    private SimpleAuthClient simpleAuthClient;
+
     /**
      * 通过用户名密码登陆
      *
@@ -63,14 +69,22 @@ public class SysUserServiceImpl implements SysUserService {
                 return new ResultBean<>(false, CommResultCode.DATA_ERROR.getCode(), "用户登陆名或密码错误,请重新登陆.");
             } else if (!passwordEncoder.matches(StringExtUtils.trim(loginPwd), sysUserPO.getLoginPwd())) {
                 return new ResultBean<>(false, CommResultCode.DATA_ERROR.getCode(), "用户登陆名或密码错误,请重新登陆.");
-            } else {
-                return ResultBean.DEFAULT_SUCCESS_RESULT;
+            } else if(SysUserStatus.ENABLE.getCode() != sysUserPO.getUserStatus()){
+                return new ResultBean<>(false, CommResultCode.DATA_ERROR.getCode(), "用户不可用,请联系系统管理员..");
+            }else{
+                LoginUserDto loginUserDto = new LoginUserDto();
+                loginUserDto.setLoginName(loginName);
+                loginUserDto.setSysCode("TMS");
+                return  simpleAuthClient.createToken(loginUserDto);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new TmsException("用户登陆失败:服务器出现异常.",e);
         }
     }
 
+//    private void logSysUserLogin(){
+//
+//    }
     @Override
     public ResultBean<String> saveSysUser(SysUser sysUser) throws TmsException {
         SysUserPO sysUserPO = this.BuildSysUserPO(sysUser);

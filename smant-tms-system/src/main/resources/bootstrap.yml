@@ -1,6 +1,6 @@
 # Tomcat
 server:
-  port: 8080
+  port: 8081
 
 # Spring
 spring:
@@ -27,10 +27,13 @@ spring:
         file-extension: yml
         extension-configs:
           - data-id: common-rabbitmq.yml
-            group: @nacos.discovery.group@
+            group: @nacos.config.group@
             refresh: true
           - data-id: common-redis.yml
-            group: @nacos.discovery.group@
+            group: @nacos.config.group@
+            refresh: true
+          - data-id: common-service.yml
+            group: @nacos.config.group@
             refresh: true
 #mybatis-plus:
 #  configuration:
